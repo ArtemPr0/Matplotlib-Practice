@@ -2,8 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-data = pd.read_csv("export_1662385061.csv") # load data
-
+# Practice Plot
 plt.plot([23,14,43,53],
          [14,23,29,41],
          color = 'purple',
@@ -26,19 +25,42 @@ plt.tick_params(axis='y',
 plt.legend()
 plt.show()
 
-plt.figure(figsize=(20,5))
-x = range(len(data['timestamp']))
-plt.ylim(21.4,22.5)
-plt.plot(x,data["Ambient Temperature"],
-         color = 'purple',
-         marker = 'd',
-         label = "Export" )
-plt.tick_params(axis='y',
-                color='green',
-                labelcolor= 'green')
+
+
+#Working with CSV file
+
+data = pd.read_csv("export_1662385061.csv") # Load Data
+
+# Convert 'timestamp' to datetime if it's not already
+data['timestamp'] = pd.to_datetime(data['timestamp'])
+
+# Start a new figure
+plt.figure(figsize=(20, 5))
+
+# First y-axis for 'Exciter Field Current'
+line1, = plt.plot(data['timestamp'], data['Exciter Field Current'], color='purple', linestyle='--', linewidth=2, marker='d', markersize=10, label='Exciter Field Current')
+
+# Second y-axis for 'Line Current'
+ax2 = plt.twinx()
+line2, = ax2.plot(data['timestamp'], data['Line Current'], color='green', linewidth=2, marker='o', markersize=10, label='Line Current')
+
+# Set the labels for x-axis and y-axes
 plt.xlabel("Time (ISO 8601)")
-plt.ylabel("Ambient Temperature")
-plt.minorticks_on()
-plt.grid(which = 'minor', color='orange')
-plt.grid(color='red', linewidth=2)
+plt.ylabel("Exciter Field Current", color='purple')
+ax2.set_ylabel("Line Current", color='green')
+
+# Customize tick parameters
+plt.tick_params(axis='y', colors='purple')
+ax2.tick_params(axis='y', colors='green')
+
+# Create legends for both lines
+plt.legend([line1, line2], ["Exciter Field Current", "Line Current"], loc='upper left')
+
+# Add title
+plt.title('Exciter Field Current and Line Current Over Time')
+
+# Add grid
+plt.grid(True)
+
+# Display the plot
 plt.show()
