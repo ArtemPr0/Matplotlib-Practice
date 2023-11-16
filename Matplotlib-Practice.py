@@ -39,8 +39,7 @@ plt.show()
 data = pd.read_csv("export_1662385061.csv") # Load Data
 
 # Convert 'timestamp' to datetime
-<<<<<<< HEAD
-#data['timestamp'] = pd.to_datetime(data['timestamp'])
+
 df = pd.DataFrame(data)
 df['timestamp'] = pd.to_datetime(df['timestamp'])
 
