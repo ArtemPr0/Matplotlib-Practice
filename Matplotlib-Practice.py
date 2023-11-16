@@ -1,8 +1,10 @@
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 import pandas as pd
 import numpy as np
 
 # Practice Plot
+plt.figure(figsize=(9, 4))
 plt.plot([23,14,43,53],
          [14,23,29,41],
          color = 'purple',
@@ -26,6 +28,8 @@ plt.tick_params(axis='x',
                 color='green',
                 labelcolor='red',
                 labelsize='x-large')
+plt.tight_layout()
+plt.savefig("Practice-Plot.png", dpi=300)
 plt.show()
 
 
@@ -35,17 +39,22 @@ plt.show()
 data = pd.read_csv("export_1662385061.csv") # Load Data
 
 # Convert 'timestamp' to datetime
-data['timestamp'] = pd.to_datetime(data['timestamp'])
+#data['timestamp'] = pd.to_datetime(data['timestamp'])
+df = pd.DataFrame(data)
+df['timestamp'] = pd.to_datetime(df['timestamp'])
 
 # Start a new figure
-plt.figure(figsize=(19, 5))
+plt.figure(figsize=(9, 4))
 
 # First y-axis for 'Exciter Field Current'
-line1, = plt.plot(data['timestamp'], data['Exciter Field Current'], color='purple', linestyle='--', linewidth=1, label='Exciter Field Current')
+line1, = plt.plot(df['timestamp'], df['Exciter Field Current'], color='purple', linestyle='--', linewidth=1, label='Exciter Field Current')
 
 # Second y-axis for 'Line Current'
 ax2 = plt.twinx()
-line2, = ax2.plot(data['timestamp'], data['Line Current'], color='green', linewidth=1,  label='Line Current')
+line2, = ax2.plot(df['timestamp'], df['Line Current'], color='green', linewidth=1,  label='Line Current')
+
+plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S'))
+plt.gca().xaxis.set_major_locator(mdates.AutoDateLocator())
 
 # Set the labels for x-axis and y-axes
 plt.xlabel("Time (ISO 8601)")
@@ -66,8 +75,16 @@ ax2.set_ylim()
 # Add title
 plt.title('Exciter Field Current and Line Current Over Time')
 
+plt.annotate('20/04/21', xy=(0.02,1), xycoords='figure fraction', horizontalalignment='left', verticalalignment='top', color='red', fontsize=12)
+
 # Add grid
 plt.grid(True)
 
+#plt.xticks(ticks=df['timestamp'], rotation=45)
+
+# Save figure with high DPI for better quality 
+plt.savefig("Current-Time-Plot.png", dpi = 300)
+
 # Display the plot
 plt.show()
+
