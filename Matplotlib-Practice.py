@@ -39,7 +39,6 @@ plt.show()
 data = pd.read_csv("export_1662385061.csv") # Load Data
 
 # Convert 'timestamp' to datetime
-
 df = pd.DataFrame(data)
 df['timestamp'] = pd.to_datetime(df['timestamp'])
 
@@ -82,9 +81,24 @@ plt.grid(True)
 
 #plt.xticks(ticks=df['timestamp'], rotation=45)
 
+plt.tight_layout()
+
 # Save figure with high DPI for better quality 
 plt.savefig("Current-Time-Plot.png", dpi = 300)
 
+fig2, (ax1, ax2) = plt.subplots(nrows=2, ncols=1)
+ax1.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S'))
+ax1.xaxis.set_major_locator(mdates.AutoDateLocator())
+
+ax2.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S'))
+ax2.xaxis.set_major_locator(mdates.AutoDateLocator())
+
+ax1.plot(df['timestamp'], df['Reactive Power'], color='red', linewidth=1,  label='Reactive Power')
+ax2.plot(df['timestamp'], df['Ambient Temperature'], color='blue', linewidth=1,  label='Ambient Temperature')
+plt.xlabel("Time")
+ax1.set_ylabel("Reactive Power", color='red')
+ax2.set_ylabel("Ambient Temperature", color='blue')
+plt.grid(True)
+
 # Display the plot
 plt.show()
-
